@@ -32,9 +32,16 @@
 import React, { useState } from 'react';
 import Filter from '../components/Filter';
 import MenuItem from '../components/MenuItem';
+// import getProductsBySearch
 
 const Home = () => {
   const [showFilter, setShowFilter] = useState(false);
+  const [text, setText]=useState('');
+
+  const handleSearch=e=>{
+    setText(e.target.value);
+    dispatch(getProductsBySearch({type:'text',query:e.target.value}))
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#4B2E2B] to-[#7B4F42] px-4 py-6 text-white">
@@ -48,6 +55,7 @@ const Home = () => {
             type="text"
             placeholder="Search ..."
             className="p-3 w-full md:w-64 focus:outline-none text-black text-sm"
+            onChange={handleSearch}
           />
           <button
             type="submit"

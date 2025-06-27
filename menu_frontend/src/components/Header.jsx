@@ -18,9 +18,9 @@ const Header = () => {
             </div>
 
             <nav className="hidden md:flex gap-6">
-                <a href="#menu" className="text-white text-lg font-medium hover:text-[#f5e3c1] transition duration-150">Menu</a>
-                <a href="#about" className="text-white text-lg font-medium hover:text-[#f5e3c1] transition duration-150">About</a>
-                <a href="#contact" className="text-white text-lg font-medium hover:text-[#f5e3c1] transition duration-150">Contact</a>
+                <a href="/menu" className="text-white text-lg font-medium hover:text-[#f5e3c1] transition duration-150">Menu</a>
+                <a href="/cart" className="text-white text-lg font-medium hover:text-[#f5e3c1] transition duration-150">View Cart</a>
+                <a href="/bill" className="text-white text-lg font-medium hover:text-[#f5e3c1] transition duration-150">Payment</a>
             </nav>
         </header>
     );
