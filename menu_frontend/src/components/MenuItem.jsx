@@ -1,71 +1,85 @@
-// import React from 'react';
-// import veg from '../assets/Veg_symbol.svg';
-// import coffee from '../assets/coffee.svg';
-
-// const MenuItem = () => {
-//   return (
-//     <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 mb-4 border border-gray-200">
-      
-//       {/* Top Row */}
-//       <div className="flex items-center gap-3 mb-2">
-//         <img src={veg} alt="Veg" className="w-5 h-5" />
-//         <h3 className="font-semibold text-lg text-gray-800 flex-1">Dish Name</h3>
-//         <p className="text-gray-700 text-base font-medium mr-4">₹199</p>
-//         <button className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-full text-sm font-medium transition">
-//           +
-//         </button>
-//       </div>
-
-//       {/* Bottom Row */}
-//       <div className="flex justify-between items-center">
-//         <p className="text-gray-600 text-sm flex-1 pr-2">
-//           A delicious description of the item goes here.
-//         </p>
-//         <img src={coffee} alt="Item" className="w-12 h-12 rounded-md object-cover" />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MenuItem;
-
 import React, { useState } from 'react';
-import veg from '../assets/Veg_symbol.svg';
+import veg_icon from '../assets/Veg_symbol.svg';
+import nonveg_icon from '../assets/Non_veg_symbol.svg';
 import coffee from '../assets/coffee.svg';
+import { useCart } from '../context/CartContext';
 
-const MenuItem = () => {
+const MenuItem = ({ name, photo, description, price, veg }) => {
   const [expanded, setExpanded] = useState(false);
+  const { cart, addToCart, updateQty, deleteFromCart } = useCart();
+
+  const existing = cart.find(item => item.name === name);
+  const qty = existing?.qty || 0;
+
+  const handleAdd = async (e) => {
+    e.stopPropagation();
+    try {
+      await addToCart({ name, price });
+    } catch (err) {
+      console.error('Add to cart error:', err.message);
+    }
+  };
+
+  const handleInc = async (e) => {
+    e.stopPropagation();
+    if (existing) {
+      await updateQty(existing._id, existing.qty + 1);
+    }
+  };
+
+  const handleDec = async (e) => {
+    e.stopPropagation();
+    if (existing.qty === 1) {
+      await deleteFromCart(existing._id);
+    } else {
+      await updateQty(existing._id, existing.qty - 1);
+    }
+  };
 
   return (
     <>
-      {/* Compact Card */}
       <div
         onClick={() => setExpanded(true)}
         className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 mb-4 border border-gray-200 cursor-pointer"
       >
         <div className="flex items-center gap-3 mb-2">
-          <img src={veg} alt="Veg" className="w-5 h-5" />
-          <h3 className="font-semibold text-lg text-gray-800 flex-1">Dish Name</h3>
-          <p className="text-gray-700 text-base font-medium mr-4">₹199</p>
-          <button
-            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-full text-sm font-medium transition"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevents modal from opening when clicking +
-              // Optional: handle quantity increase
-            }}
-          >
-            +
-          </button>
+          <img src={veg ? veg_icon : nonveg_icon} alt={veg ? "veg" : "non-veg"} className="w-5 h-5" />
+          <h3 className="font-semibold text-lg text-gray-800 flex-1">{name}</h3>
+          <p className="text-gray-700 text-base font-medium mr-4">₹{price}</p>
+
+          {qty === 0 ? (
+            <button
+              onClick={handleAdd}
+              className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-full text-sm font-medium transition"
+            >
+              + Add
+            </button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleDec}
+                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm"
+              >
+                -
+              </button>
+              <span className="text-black font-semibold">{qty}</span>
+              <button
+                onClick={handleInc}
+                className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-full text-sm"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
         <div className="flex justify-between items-center">
           <p className="text-gray-600 text-sm flex-1 pr-2">
-            A short preview of the dish.
+            {description.slice(0, 60)} ...
           </p>
-          <img src={coffee} alt="Item" className="w-12 h-12 rounded-md object-cover" />
+          <img src={photo} alt={name} className="w-12 h-12 rounded-md object-cover" />
         </div>
       </div>
 
-      {/* Full-Screen Overlay */}
       {expanded && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 px-4">
           <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative">
@@ -76,19 +90,15 @@ const MenuItem = () => {
               ✕
             </button>
             <div className="flex items-center gap-2 mb-4">
-              <img src={veg} alt="Veg" className="w-5 h-5" />
-              <h2 className="text-xl font-bold text-gray-800">Dish Name</h2>
+              <img src={veg ? veg_icon : nonveg_icon} alt={veg ? "veg" : "non-veg"} className="w-5 h-5" />
+              <h2 className="text-xl font-bold text-gray-800">{name}</h2>
             </div>
             <img
-              src={coffee}
-              alt="Large"
+              src={photo}
+              alt={name}
               className="w-full h-48 object-cover rounded-lg mb-4"
             />
-            <p className="text-gray-700 text-sm">
-              This is the full description of the dish. It goes into more detail
-              about the ingredients, taste, preparation, and any other important
-              info a customer might need. You can scroll if needed.
-            </p>
+            <p className="text-gray-700 text-sm">{description}</p>
           </div>
         </div>
       )}
