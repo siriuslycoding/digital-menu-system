@@ -9,6 +9,224 @@
   color: #513928; /* coffee color */
   -webkit-text-stroke: 0.1px rgb(202, 195, 195); /* thin white outline */
 }
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.lobster-regular {
+  font-family: "Lobster", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.coffee-heading {
+  color: #513928;
+  -webkit-text-stroke: 0.1px rgb(202, 195, 195); 
+}
+
+@import "tailwindcss";
+
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* font-family: "Fredoka", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; */
+
+  /* background: linear-gradient(to bottom right, #ED4264, #FFEDBC); */
+  background:linear-gradient(to bottom left,#513928,#dcc5a0) ;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  min-height: 100vh;
+  /* background: url('./assets/bg5.jpeg'); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: "Fredoka", sans-serif;
+  /* color: #3a3a3a; */
+
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+
+.TopNavbar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  /* border-bottom: 1px solid #ccc; */
+  background-color: #703f28;
+}
+.TopNavbar h2{
+  position: relative;
+  top: 15px;
+}
+
+.backIcon {
+  position: absolute;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+h1 {
+  color: rgb(0, 0, 0);
+  text-align: center;
+  margin: 0;
+}
+
+.cartPage {
+  padding: 32px 24px;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.TopNavbar h2 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 1px rgba(139, 94, 60, 0.2);
+}
+
+.cartItemsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.cartItem {
+  /* background: linear-gradient(135deg, #fffaf4, #f4eee6); */
+  background: #73482a90;
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  border-left: 5px solid #dcc5a0;
+}
+
+.cartItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(139, 94, 60, 0.1);
+}
+
+.cartItem h4 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.cartItem p {
+  margin: 4px 0;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.totalAmount {
+  /* background-color: #a9825a; */
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+  font-family: "Lobster", cursive;
+  letter-spacing: 1px;
+
+  margin-top: 32px;
+  padding: 20px;
+  background-color: #7d593d;
+  border-radius: 15px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  /* box-shadow: 0 6px 16px rgba(139, 94, 60, 0.3); */
+}
+
+.lobster-regular {
+  font-family: "Lobster", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.coffee-heading {
+  color: #513928;
+  -webkit-text-stroke: 0.1px rgb(202, 195, 195);
+}
+
+.pay-container {
+  display: flex;
+  justify-content: center;
+}
+
+.pay-button {
+  background-color: white;
+  color: #7c2d12;
+  border: 2px solid #dcc5a0;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;  
+  margin-top: 1.2rem;
+}
+
+.pay-button:hover {
+  background-color: #fdf4e3;
+}
+
+.Payment {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.confirm-button {
+  background-color: white;
+  color: #7c2d12;
+  border: 2px solid #dcc5a0;
+  border-radius: 9999px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-color: antiquewhite;
+}
+
+.confirm-blur {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* backdrop-filter: blur(6px); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-box {
+  background-color: whitesmoke;
+  color: #7c2d12;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  max-width: 350px;
+  width: 90%;
+  
+}
 
 
 @import "tailwindcss";
