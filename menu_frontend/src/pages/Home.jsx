@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Filter from '../components/Filter';
 import MenuItem from '../components/MenuItem';
 import search from '../assets/search_white.svg';
+import Search from '../components/Search';  
 
 const Home = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -20,6 +21,7 @@ const Home = () => {
     fetchMenu();
   }, [])
 
+ 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#3b2b2b] to-[#94614e] text-white">
 
@@ -27,24 +29,7 @@ const Home = () => {
       <div className="sticky top-0 z-50 px-3 py-3 shadow-md bg-[#703f28] rounded-t-none">
         <div className="flex flex-row md:items-center md:justify-between gap-4">
 
-          {/* Search Bar */}
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex w-full md:w-auto rounded-2xl border border-amber-300 shadow bg-white overflow-hidden"
-          >
-            <input
-              type="text"
-              placeholder="Search an item ..."
-              className="p-3 w-full md:w-64 focus:outline-none text-black text-sm"
-            />
-            <button
-              type="submit"
-              className="flex items-center justify-center px-3 bg-amber-800 hover:bg-amber-700 transition-colors duration-200"
-              aria-label="Search"
-            >
-              <img src={search} alt="Search icon" className="w-6 h-6" />
-            </button>
-          </form>
+          <Search/>
 
           {/* Filter Button */}
           <button
@@ -71,11 +56,15 @@ const Home = () => {
               description={item.description}
               price={item.price}
               veg={item.veg}
+              section={item.sections}
+              chefspecial={item.chefspecial}
+              available={item.available}
             />
           ))}
       </div>
 
     </div>
+    
   );
 };
 

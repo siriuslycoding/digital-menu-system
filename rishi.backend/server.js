@@ -18,7 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 //routes
-app.use('/api/menu', menuRoutes);
+app.use('/api/menu', require('./routes/menu.js'));
 app.use('/api/bill', cartRoutes);
 
 mongoose.connect(process.env.URI)
