@@ -28,9 +28,7 @@ const SearchBar = () => {
   const searchItems = async (search) => {
     if (!search) return setResults([]);
     try {
-      console.log("Searching for:", search);
       const res = await axios.get(`/api/menu/live-search?search=${search}`);
-      console.log(res.data);
       setResults(res.data);
     } catch (err) {
       setResults([]);
@@ -38,7 +36,6 @@ const SearchBar = () => {
   };
 
   return (
-    
     <div className="w-full flex flex-col items-start px-4 py-2 relative">
       <div className="flex items-center gap-2 w-full max-w-md">
         <img src={search} alt="Search" className="w-5 h-5" />
@@ -58,7 +55,7 @@ const SearchBar = () => {
               <div
                 key={item._id}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b"
-                onClick={() => navigate(`/search/${encodeURIComponent(item.name)}`)}
+                onClick={() => navigate(`/search?q=${encodeURIComponent(item.name)}`)}
               >
                 {item.name}
               </div>
