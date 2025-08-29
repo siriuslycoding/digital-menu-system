@@ -15,11 +15,13 @@ const menuSchema = new Schema({
     },
 
     chefspecial: {
-        type: Boolean
+        type: Boolean,
+        required:true
     },
 
     available: {
-        type: Boolean
+        type: Boolean,
+        default :true 
     },
 
     price: Number

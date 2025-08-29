@@ -89,6 +89,8 @@ const Home = () => {
               description={item.description}
               price={item.price}
               veg={item.veg}
+              chefspecial={item.chefspecial}
+              available={item.available}
             />
           ))
         ) : (
