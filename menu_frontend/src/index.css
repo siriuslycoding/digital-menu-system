@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import "tailwindcss";
 
 .lobster-regular {
   font-family: "Lobster", sans-serif;
@@ -9,20 +10,6 @@
   color: #513928; /* coffee color */
   -webkit-text-stroke: 0.1px rgb(202, 195, 195); /* thin white outline */
 }
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-
-.lobster-regular {
-  font-family: "Lobster", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.coffee-heading {
-  color: #513928;
-  -webkit-text-stroke: 0.1px rgb(202, 195, 195); 
-}
-
-@import "tailwindcss";
-
 
 body {
   margin: 0;

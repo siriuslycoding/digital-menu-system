@@ -111,8 +111,7 @@ export default function ChatBot() {
           />
 
           {/* Panel */}
-          <div className="relative w-full h-[85vh] sm:h-[80vh] sm:max-w-md rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl
-                          bg-gradient-to-b from-[#3b2b2b] to-[#94614e] text-[#F8E6C1]">
+          <div className="relative w-full h-[85vh] sm:h-[80vh] sm:max-w-md rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-b from-[#3b2b2b] to-[#94614e] text-[#F8E6C1] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#6B4F4F]">
               <div className="flex items-center gap-2">
@@ -191,7 +190,7 @@ export default function ChatBot() {
             </div>
 
             {/* Messages */}
-            <div ref={listRef} className="px-4 py-3 space-y-3 h-[calc(85vh-240px)] sm:h-[calc(80vh-240px)] overflow-y-auto">
+            <div ref={listRef} className="flex-1 px-4 py-3 space-y-3 overflow-y-auto">
               {messages.map((m, idx) => (
                 <Message key={idx} m={m} />
               ))}
