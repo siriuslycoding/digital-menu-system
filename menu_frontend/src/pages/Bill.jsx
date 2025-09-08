@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 // import backIcon from '../assets/arrow-left.png';
+import { Menu, X } from 'lucide-react'; // for hamburger & close icons
+
 
 const Bill = () => {
   const [clicked, setClicked] = useState(false);
@@ -8,6 +10,8 @@ const Bill = () => {
   const [menuData, setMenuData] = useState([]);
   const [cartData, setCartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // for hamburger toggle
+
 
   const navigate = useNavigate();
 
@@ -25,9 +29,9 @@ const Bill = () => {
     fetch('http://localhost:4000/api/bill')
       .then(res => res.json())
       .then(data => setBillData(data))
-       .then(() => {
-                setRefresh(prev => !prev);  //Trigger refresh
-            })
+      .then(() => {
+        setRefresh(prev => !prev);  //Trigger refresh
+      })
       .catch(err => console.log("Failed to fetch bill data:", err));
   }, [refresh]);
 
@@ -49,10 +53,35 @@ const Bill = () => {
 
   return (
     <div>
-      <div className="TopNavbar">
-        {/* <img src={backIcon} alt="Back" className="backIcon" /> */}
-        <h2>Your Cart</h2>
-      </div>
+      <div className="TopNavbar relative flex items-center justify-center px-3 bg-[#703f28] shadow-md">
+  {/* Title centered */}
+  <h2 className="text-lg font-bold text-white relative top-3.5">Your Cart</h2>
+
+  {/* Hamburger absolutely positioned on right */}
+  <button
+    className="absolute right-3 md:hidden p-2 rounded-lg hover:bg-amber-700"
+    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+  >
+    {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+  </button>
+</div>
+
+
+
+      {/* Mobile Dropdown Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden mt-3 flex flex-col gap-2 bg-[#5a3221] p-3 rounded-lg shadow-lg">
+          <button
+            onClick={() => {
+              navigate('/');
+              setMobileMenuOpen(false);
+            }}
+            className="w-full px-4 py-2 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-xl shadow hover:bg-amber-100 transition"
+          >
+            Menu
+          </button>
+        </div>
+      )}
 
       <div className="cartPage">
         <div className="cartItemsContainer">

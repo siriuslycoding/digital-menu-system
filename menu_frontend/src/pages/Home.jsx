@@ -3,16 +3,14 @@ import Filter from '../components/Filter';
 import MenuItem from '../components/MenuItem';
 import Search from '../components/Search';
 import { useNavigate } from 'react-router-dom';
-
+import { Menu, X } from 'lucide-react'; // for hamburger & close icons
 
 const Home = () => {
   const navigate = useNavigate();
-  // const viewCart = () => {
-  //   navigate('/Bill');
-  // };
   const [showFilter, setShowFilter] = useState(false);
   const [menu, setMenu] = useState([]);
   const [filters, setFilters] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // for hamburger toggle
 
   const fetchMenu = async (filterParams = '') => {
     try {
@@ -35,7 +33,7 @@ const Home = () => {
     const queryParams = new URLSearchParams();
 
     if (filters.vnv === 'veg') queryParams.append('veg', 'veg');
-  else if (filters.vnv === 'nonveg') queryParams.append('veg', 'nonveg');
+    else if (filters.vnv === 'nonveg') queryParams.append('veg', 'nonveg');
 
     if (filters.section) queryParams.append('section', filters.section);
     if (filters.special) queryParams.append('chefsSpecial', 'true');
@@ -49,28 +47,67 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#3b2b2b] to-[#94614e] text-white">
       {/* Sticky Top Bar */}
       <div className="sticky top-0 z-50 px-3 py-3 shadow-md bg-[#703f28]">
-        <div className="flex flex-row items-center justify-between gap-4">
+        <div className="flex items-center justify-between">
+          {/* Search always visible */}
           <Search />
 
+          {/* Desktop buttons */}
+          <div className="hidden md:flex gap-3">
+            <button
+              onClick={() => setShowFilter(true)}
+              className="px-5 py-2.5 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-2xl shadow hover:bg-amber-100 transition"
+            >
+              Filter
+            </button>
+            <button
+              onClick={() => navigate('/Bill')}
+              className="px-5 py-2.5 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-2xl shadow hover:bg-amber-100 transition"
+            >
+              Cart
+            </button>
+          </div>
+
+          {/* Mobile Hamburger */}
           <button
-            onClick={() => setShowFilter(true)}
-            className="z-50 px-5 py-2.5 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-2xl shadow hover:bg-amber-100 transition"
+            className="md:hidden p-2 rounded-lg hover:bg-amber-700"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            Filter
-          </button>
-          <button
-            onClick={() => navigate('/Bill')}
-            className="z-50 px-5 py-2.5 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-2xl shadow hover:bg-amber-100 transition"
-          >
-            Cart
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-3 flex flex-col gap-2 bg-[#5a3221] p-3 rounded-lg shadow-lg">
+            <button
+              onClick={() => {
+                setShowFilter(true);
+                setMobileMenuOpen(false);
+              }}
+              className="w-full px-4 py-2 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-xl shadow hover:bg-amber-100 transition"
+            >
+              Filter
+            </button>
+            <button
+              onClick={() => {
+                navigate('/Bill');
+                setMobileMenuOpen(false);
+              }}
+              className="w-full px-4 py-2 bg-white text-amber-800 border-2 border-amber-500 font-semibold rounded-xl shadow hover:bg-amber-100 transition"
+            >
+              Cart
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Filter Overlay */}
       {showFilter && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={() => setShowFilter(false)} />
+          <div
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            onClick={() => setShowFilter(false)}
+          />
           <Filter
             onApply={handleApplyFilters}
             onClose={() => setShowFilter(false)}

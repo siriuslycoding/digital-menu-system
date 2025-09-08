@@ -38,19 +38,18 @@ code {
 }
 
 
-.TopNavbar {
+/* .TopNavbar {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 60px;
-  /* border-bottom: 1px solid #ccc; */
   background-color: #703f28;
 }
 .TopNavbar h2{
   position: relative;
   top: 15px;
-}
+} */
 
 .backIcon {
   position: absolute;
