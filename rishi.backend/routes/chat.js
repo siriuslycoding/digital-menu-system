@@ -6,19 +6,53 @@ const menuModel = require('../models/menuModel');
 
 const HUGGING_FACE_TOKEN = process.env.HUGGINGFACE_API_KEY;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-const EMBEDDING_API_URL = 'https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2';
+const EMBEDDING_API_URL = 'https://api-inference.huggingface.co/embeddings/sentence-transformers/all-MiniLM-L6-v2';
+
+function preprocessForEmbedding(rawInput) {
+  if (!rawInput || typeof rawInput !== "string") return "";
+
+  // 1. Remove "User message:" label
+  let cleaned = rawInput.replace(/User message:\s*/i, "");
+
+  // 2. Replace "Preferences:" and list markers with commas
+  cleaned = cleaned
+    .replace(/Preferences:\s*/i, "")
+    .replace(/-\s*/g, "")
+    .replace(/\s+/g, " ") // collapse extra spaces/newlines
+    .trim();
+
+  // 3. Remove any "null" values
+  cleaned = cleaned.replace(/\bnull\b/gi, "");
+
+  // 4. Optionally: turn structured info into a single sentence
+  return cleaned;
+}
 
 // Function to get embedding for a given text
 async function getEmbedding(text) {
+  console.log("Attempting to generate embedding with URL:", EMBEDDING_API_URL);
+  console.log("Using Hugging Face Token (first 5 chars):", HUGGING_FACE_TOKEN ? HUGGING_FACE_TOKEN.substring(0, 5) : "Token is UNDEFINED");
+
   try {
     const response = await axios.post(
       EMBEDDING_API_URL,
-      { inputs: text, options: { wait_for_model: true } },
-      { headers: { Authorization: `Bearer ${HUGGING_FACE_TOKEN}` } }
+      { inputs: text },
+      { 
+        headers: { 
+          Authorization: `Bearer ${HUGGING_FACE_TOKEN}`,
+          "Content-Type": "application/json"
+        } 
+      }
     );
-    return response.data;
+
+    // const embedding = response.data;
+    // if (Array.isArray(embedding) && Array.isArray(embedding[0])) {
+    //   return embedding[0]; // flatten 2D array
+    // }
+    const embedding = response.data.embedding;
+    return embedding;
   } catch (error) {
-    console.error('Error generating embedding:', error.message);
+    console.error("Error generating embedding:", error.response?.data || error.message);
     return null;
   }
 }
@@ -62,14 +96,14 @@ Your Answer:`;
 // The main chat route
 router.post('/', async (req, res) => {
   const { message, preferences } = req.body;
-  const {budget, vibe, vegOnly, useDiscounts} = preferences;
+  const { budget, vibe, vegOnly, useDiscounts } = preferences;
 
   if (!message) {
     return res.status(400).json({ error: 'Message is required.' });
   }
 
   const detailedQuery = `
-    User message: "${message}"
+    User message: ${message}
     Preferences:
     - Vibe: ${vibe || 'any'}
     - Budget: up to ₹${budget}
@@ -78,7 +112,11 @@ router.post('/', async (req, res) => {
   `;
 
   // 1. Generate embedding for the user's query
-  const queryEmbedding = await getEmbedding(detailedQuery);
+  const cleanedText = preprocessForEmbedding(detailedQuery);
+  console.log("Request body:", { inputs: cleanedText});
+  const queryEmbedding = await getEmbedding(cleanedText);
+  console.log("Embedding length:", queryEmbedding.length);
+
   if (!queryEmbedding) {
     return res.status(500).json({ error: 'Failed to process query.' });
   }
@@ -116,11 +154,11 @@ router.post('/', async (req, res) => {
       .join('\n\n');
 
     const finalResponse = await getLlmResponse(message, context, preferences);
-    res.json({ 
-        reply: finalResponse,
-        combos: [],
-        suggestions: []
-     });
+    res.json({
+      reply: finalResponse,
+      combos: [],
+      suggestions: []
+    });
 
   } catch (error) {
     console.error('Vector search error:', error);
