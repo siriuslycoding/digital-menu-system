@@ -70,7 +70,7 @@ export default function ChatBot() {
 
       setMessages(prev => [
         ...prev,
-        { role: 'assistant', content: data.reply, combos: data.combos || [], suggestions: data.suggestions || [] }
+        { role: 'assistant', content: data.response, combos: data.combos || [], suggestions: data.suggestions || [] }
       ]);
 
     } catch (err) {
